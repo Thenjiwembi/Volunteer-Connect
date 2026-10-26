@@ -73,7 +73,7 @@ Run the executable validation tests with `pnpm test`. They cover signup role/det
 
 ## Safe deployment
 
-Build the static client with `pnpm run build`, then run the container with `docker build -t volunteer-connect .` and `docker run --env-file .env -p 3000:3000 volunteer-connect`. The Docker image builds the client and starts the Express server; it reads Supabase credentials at runtime. Configure the deployment health check to `GET /api/health` and set `PORT` if the hosting provider supplies one. In a published environment, set `NODE_ENV=production`, use an exact `CLIENT_ORIGIN`, enable Supabase email verification, configure the Supabase redirect URLs for the deployed origin, and rotate any key that has been accidentally exposed. Do not allow broad CORS origins in production.
+Build the static client with `pnpm run build`, then run the container with `docker build -t volunteer-connect .` and `docker run --env-file .env -p 3000:3000 volunteer-connect`. The Docker image builds the client and starts the Express server; it reads Supabase credentials at runtime. Configure the deployment health check to `GET /api/health` and set `PORT` if the hosting provider supplies one. In a published environment, set `NODE_ENV=production`, use exact `CLIENT_ORIGIN` values for any cross-origin clients (same-origin requests are allowed automatically), enable Supabase email verification, configure the Supabase redirect URLs for the deployed origin, and rotate any key that has been accidentally exposed. Do not allow broad CORS origins in production.
 
 ## CAPACITI Week 6 evidence checklist
 

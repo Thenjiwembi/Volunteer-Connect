@@ -61,14 +61,14 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
   frameguard: process.env.NODE_ENV === 'production' ? { action: 'deny' } : false
 }))
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || process.env.NODE_ENV !== 'production') return callback(null, true)
-    const allowed = (process.env.CLIENT_ORIGIN || '').split(',').map((item) => item.trim()).filter(Boolean)
-    if (!allowed.length) return callback(new Error('CLIENT_ORIGIN must be configured in production.'))
-    return callback(null, allowed.includes(origin))
-  },
-  credentials: true
+app.use(cors((req, callback) => {
+  const origin = req.header('Origin')
+  if (!origin || process.env.NODE_ENV !== 'production') return callback(null, { origin: true, credentials: true })
+  const requestOrigin = `${req.protocol}://${req.get('host')}`
+  if (origin === requestOrigin) return callback(null, { origin: true, credentials: true })
+  const allowed = (process.env.CLIENT_ORIGIN || '').split(',').map((item) => item.trim()).filter(Boolean)
+  if (!allowed.length) return callback(new Error('CLIENT_ORIGIN must be configured in production.'))
+  return callback(null, { origin: allowed.includes(origin), credentials: true })
 }))
 app.use(express.json({ limit: '100kb' }))
 app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, limit: 180, standardHeaders: true, legacyHeaders: false }))
