@@ -136,7 +136,9 @@ function verifyAdminInvite(code) {
 }
 
 function appUrl() {
-  const value = process.env.APP_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000')
+  const value = process.env.APP_URL || (process.env.NODE_ENV === 'production'
+    ? process.env.RENDER_EXTERNAL_URL || ''
+    : 'http://localhost:3000')
   if (!value) throw fail('APP_URL must be configured before account registration is enabled.', 503, 'APP_URL_NOT_CONFIGURED')
   let parsed
   try {
