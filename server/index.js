@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import { createClient } from '@supabase/supabase-js'
 import nodemailer from 'nodemailer'
+import { getPublicErrorMessage } from './http-errors.js'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import fs from 'node:fs'
@@ -630,7 +631,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use((error, _req, res, _next) => {
   const status = Number(error.status) || 500
   if (status >= 500) console.error(error)
-  res.status(status).json({ error: { code: error.code || 'INTERNAL_ERROR', message: status >= 500 ? (error.code === 'SUPABASE_NOT_CONFIGURED' ? error.message : 'Something went wrong on the server.') : error.message } })
+  res.status(status).json({ error: { code: error.code || 'INTERNAL_ERROR', message: getPublicErrorMessage(error, status) } })
 })
 
 app.listen(port, '0.0.0.0', () => console.log(`Volunteer Connect listening on http://0.0.0.0:${port}`))
