@@ -1,0 +1,18 @@
+{
+  "routes": [
+    { "path": "/", "title": "Volunteer Connect" },
+    { "path": "/events.html", "title": "Browse opportunities" },
+    { "path": "/event-details.html", "title": "Opportunity details" },
+    { "path": "/about.html", "title": "About Volunteer Connect" },
+    { "path": "/how-it-works.html", "title": "How it works" },
+    { "path": "/contact.html", "title": "Contact" },
+    { "path": "/register-volunteer.html", "title": "Volunteer registration" },
+    { "path": "/register-organisation.html", "title": "Organisation registration" },
+    { "path": "/login.html", "title": "Log in" },
+    { "path": "/reset-password.html", "title": "Reset password" },
+    { "path": "/dashboard-volunteer.html", "title": "Volunteer dashboard" },
+    { "path": "/dashboard-organisation.html", "title": "Organisation dashboard" },
+    { "path": "/dashboard-admin.html", "title": "Administrator dashboard" },
+    { "path": "/404.html", "title": "Page not found" }
+  ]
+}

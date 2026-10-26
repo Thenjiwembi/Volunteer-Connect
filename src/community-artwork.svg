@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 320" fill="none">
+  <circle cx="286" cy="118" r="82" fill="#F4C95D" fill-opacity=".76"/>
+  <circle cx="286" cy="118" r="101" stroke="#173F43" stroke-opacity=".14" stroke-width="2"/>
+  <path d="M0 225c73-49 135-43 205-8 65 33 142 27 235-31v134H0V225Z" fill="#8DB09F"/>
+  <path d="M0 262c86-36 153-24 224 8s137 19 216-20v85H0v-73Z" fill="#3D7C78"/>
+  <path d="M90 263V190" stroke="#173F43" stroke-width="7" stroke-linecap="round"/>
+  <path d="M59 197h112v36H59z" fill="#FFFAF0" stroke="#173F43" stroke-width="5"/>
+  <text x="115" y="220" fill="#173F43" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">show up</text>
+  <g transform="translate(235 190)">
+    <circle cx="16" cy="9" r="12" fill="#8C5E52"/>
+    <path d="M8 25c0-5 4-9 9-9s9 4 9 9v48H8V25Z" fill="#E9806E"/>
+    <path d="m14 35-18 14m25-14 22-16" stroke="#8C5E52" stroke-width="6" stroke-linecap="round"/>
+    <path d="m12 70-7 30m14-30 10 30" stroke="#173F43" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(330 215) scale(.78)">
+    <circle cx="16" cy="9" r="12" fill="#8C5E52"/>
+    <path d="M8 25c0-5 4-9 9-9s9 4 9 9v48H8V25Z" fill="#F4C95D"/>
+    <path d="m13 70-8 30m15-30 10 30" stroke="#173F43" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <path d="M387 289v-58m0 27c-17-2-24-12-22-26 13 0 22 8 22 26Zm0-8c17-3 23-13 20-27-13 1-21 10-20 27Z" stroke="#173F43" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g>
+    <rect x="265" y="20" width="146" height="49" rx="11" fill="#FFFAF0" fill-opacity=".96"/>
+    <rect x="277" y="31" width="27" height="27" rx="8" fill="#F4C95D"/>
+    <path d="m284 45 5 5 9-11" stroke="#173F43" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="312" y="41" fill="#173F43" font-family="sans-serif" font-size="10" font-weight="700">Good work, close</text>
+    <text x="312" y="55" fill="#3D7C78" font-family="sans-serif" font-size="9">to home</text>
+    <animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 0" dur="4s" repeatCount="indefinite"/>
+  </g>
+</svg>

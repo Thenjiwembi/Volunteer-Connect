@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Organisation Space | Volunteer Connect</title>
+        <link rel="stylesheet" href="src/styles.css">
+    </head>
+<body data-dashboard-role="organisation">
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/index.html" class="logo">
+                <span class="logo-mark"><span>V</span><span>C</span></span>
+                <span class="logo-type">volunteer<span>connect</span></span>
+            </a>
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="/events.html">Find opportunities</a>
+                <a href="/how-it-works.html">How it works</a>
+                <a href="/about.html">Our story</a>
+                <span class="nav-divider"></span>
+                <a href="/login.html" class="nav-login">Log in</a>
+                <button type="button" class="button button-small" data-logout hidden>Sign out</button>
+            </nav>
+        </div>
+    </header>
+    <main class="page-shell">
+        <section class="dashboard">
+            <div class="dashboard-header">
+                <div>
+                    <span class="eyebrow">Organisation space</span>
+                    <h1>Make good work<br><em>happen.</em></h1>
+                    <p data-profile-greeting>Manage your organisation profile, opportunities, and volunteer applications.</p>
+                </div>
+                <span class="status-pill status-accent" data-organisation-status>Approval required</span>
+            </div>
+            <nav class="dashboard-nav" aria-label="Dashboard sections">
+                <a href="#overview">Overview</a>
+                <a href="#opportunities">Opportunities</a>
+                <a href="#applications">Applications</a>
+            </nav>
+            <section class="dash-section" id="overview">
+                <div class="notice notice-info" data-dashboard-message role="status" aria-live="polite">
+                    Organisation dashboard data is available after signing in and connecting your organisation account.
+                </div>
+            </section>
+            <section class="dash-section" id="opportunities">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Your community work</span>
+                        <h2>Your opportunities</h2>
+                    </div>
+                </div>
+                <div class="empty-state compact" data-organisation-events>
+                    <h3>Start by setting up your organisation.</h3>
+                    <p>Once approved, you can publish opportunities and welcome volunteers.</p>
+                    <a href="/contact.html" class="text-link">Contact our team →</a>
+                </div>
+            </section>
+            <section class="dash-section" id="applications">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">People who raised a hand</span>
+                        <h2>Volunteer applications</h2>
+                    </div>
+                </div>
+                <div class="empty-state compact" data-organisation-applications>
+                    <p>Applications for your opportunities will appear here.</p>
+                </div>
+            </section>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <a href="/index.html">Volunteer Connect</a>
+            <a href="/contact.html">Contact us</a>
+            <span>Built for people who care.</span>
+        </div>
+    </footer>
+    <script type="module" src="/src/auth.js"></script>
+</body>
+</html>

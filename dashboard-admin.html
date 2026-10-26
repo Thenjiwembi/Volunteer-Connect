@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Administrator Space | Volunteer Connect</title>
+        <link rel="stylesheet" href="src/styles.css">
+    </head>
+<body data-dashboard-role="admin">
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/index.html" class="logo">
+                <span class="logo-mark"><span>V</span><span>C</span></span>
+                <span class="logo-type">volunteer<span>connect</span></span>
+            </a>
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="/events.html">Find opportunities</a>
+                <a href="/how-it-works.html">How it works</a>
+                <a href="/about.html">Our story</a>
+                <span class="nav-divider"></span>
+                <a href="/login.html" class="nav-login">Log in</a>
+                <button type="button" class="button button-small" data-logout hidden>Sign out</button>
+            </nav>
+        </div>
+    </header>
+    <main class="page-shell">
+        <section class="dashboard">
+            <div class="dashboard-header">
+                <div>
+                    <span class="eyebrow">Administrator space</span>
+                    <h1>Keep the good work<br><em>moving.</em></h1>
+                    <p>Review organisations and support a safe, trusted community.</p>
+                </div>
+                <span class="status-pill status-success">Platform overview</span>
+            </div>
+            <nav class="dashboard-nav" aria-label="Dashboard sections">
+                <a href="#overview">Overview</a>
+                <a href="#review-queue">Review queue</a>
+                <a href="#users">Users</a>
+                <a href="#audit">Audit trail</a>
+            </nav>
+            <section class="dash-section" id="overview">
+                <div class="notice notice-info" data-dashboard-message role="status" aria-live="polite">
+                    Administrator dashboard data is available after signing in with an administrator account.
+                </div>
+                <div class="admin-stats">
+                    <div>
+                        <span>♙</span>
+                        <strong data-stat="volunteers">—</strong>
+                        <small>volunteers</small>
+                    </div>
+                    <div>
+                        <span>⌂</span>
+                        <strong data-stat="approved_organisations">—</strong>
+                        <small>approved organisations</small>
+                    </div>
+                    <div>
+                        <span>▣</span>
+                        <strong data-stat="upcoming_events">—</strong>
+                        <small>upcoming opportunities</small>
+                    </div>
+                    <div>
+                        <span>↗</span>
+                        <strong data-stat="applications">—</strong>
+                        <small>applications</small>
+                    </div>
+                </div>
+                <p class="form-footnote">Pending accounts: <strong data-stat="pending_accounts">—</strong></p>
+            </section>
+            <section class="dash-section" id="review-queue">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">A little stewardship</span>
+                        <h2>Account review queue</h2>
+                    </div>
+                </div>
+                <div class="admin-list" data-pending-accounts><p class="empty-state compact">Sign in to view pending account applications.</p></div>
+            </section>
+            <section class="dash-section" id="users">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Platform care</span>
+                        <h2>User accounts</h2>
+                    </div>
+                </div>
+                <div class="admin-list" data-admin-users><p class="empty-state compact">Sign in to manage user accounts.</p></div>
+            </section>
+            <section class="dash-section" id="audit">
+                <div class="section-heading">
+                    <div><span class="eyebrow">Accountability</span><h2>Recent administrator actions</h2></div>
+                </div>
+                <div class="admin-list" data-admin-audit><p class="empty-state compact">Sign in to view the audit trail.</p></div>
+            </section>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <a href="/index.html">Volunteer Connect</a>
+            <a href="/contact.html">Contact us</a>
+            <span>Built for people who care.</span>
+        </div>
+    </footer>
+    <script type="module" src="/src/auth.js"></script>
+</body>
+</html>

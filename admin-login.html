@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#173f43">
+    <title>Administrator Sign In | Volunteer Connect</title>
+    <link rel="stylesheet" href="src/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="/index.html" class="logo" aria-label="Volunteer Connect home">
+          <span class="logo-mark"><span>V</span><span>C</span></span>
+          <span class="logo-type">volunteer<span>connect</span></span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="/index.html">Home</a>
+          <a href="/login.html" class="nav-login">Member sign in</a>
+        </nav>
+      </div>
+    </header>
+    <main class="page-shell">
+      <section class="auth-layout">
+        <div class="auth-aside">
+          <span class="eyebrow eyebrow-light">Volunteer Connect</span>
+          <h1>Make room<br><em>for good.</em></h1>
+          <p>Support the people and organisations building a stronger community.</p>
+        </div>
+        <div class="auth-panel">
+          <span class="eyebrow">Administrator access</span>
+          <h2 data-admin-heading>Welcome<br><em>back.</em></h2>
+          <p data-admin-description>Sign in with your administrator account to manage the platform.</p>
+          <p class="notice notice-info" data-auth-message role="status" aria-live="polite" hidden></p>
+          <form class="auth-form" data-auth-form="login" data-auth-role="admin" data-admin-form="login">
+            <div class="field">
+              <label for="email">Email address</label>
+              <input id="email" name="email" type="email" required autocomplete="username">
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="button button-primary full-width">Sign in as administrator</button>
+            <a href="/reset-password.html" class="form-link">Forgot your password?</a>
+            <button type="button" class="text-link centered" data-admin-mode="register">Create an admin profile →</button>
+            <a href="/login.html" class="text-link centered">Return to member sign in →</a>
+          </form>
+          <form class="auth-form" data-auth-form="register-admin" data-admin-form="register" hidden>
+            <div class="field">
+              <label for="admin-full-name">Full name</label>
+              <input id="admin-full-name" name="full_name" required minlength="2" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="admin-register-email">Email address</label>
+              <input id="admin-register-email" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="admin-register-password">Password</label>
+              <input id="admin-register-password" name="password" type="password" required minlength="8" autocomplete="new-password">
+              <small class="field-help">Use at least 8 characters.</small>
+            </div>
+            <div class="field">
+              <label for="admin-invite-code">Administrator invite code</label>
+              <input id="admin-invite-code" name="invite_code" type="password" required autocomplete="off">
+              <small class="field-help">Get this code from the trusted person managing the platform.</small>
+            </div>
+            <button type="submit" class="button button-primary full-width">Register administrator</button>
+            <button type="button" class="text-link centered" data-admin-mode="login">Already registered? Sign in →</button>
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-bottom">
+        <a href="/index.html">Volunteer Connect</a>
+        <a href="/contact.html">Contact us</a>
+        <span>Administrator registration requires a valid invite code.</span>
+      </div>
+    </footer>
+    <script type="module" src="/src/auth.js"></script>
+  </body>
+</html>

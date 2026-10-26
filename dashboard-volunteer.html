@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Volunteer Space | Volunteer Connect</title>
+        <link rel="stylesheet" href="src/styles.css">
+    </head>
+<body data-dashboard-role="volunteer">
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/index.html" class="logo">
+                <span class="logo-mark"><span>V</span><span>C</span></span>
+                <span class="logo-type">volunteer<span>connect</span></span>
+            </a>
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="/events.html">Find opportunities</a>
+                <a href="/how-it-works.html">How it works</a>
+                <a href="/about.html">Our story</a>
+                <span class="nav-divider"></span>
+                <a href="/login.html" class="nav-login">Log in</a>
+                <button type="button" class="button button-small" data-logout hidden>Sign out</button>
+            </nav>
+        </div>
+    </header>
+    <main class="page-shell">
+        <section class="dashboard">
+            <div class="dashboard-header">
+                <div>
+                    <span class="eyebrow">Your volunteer space</span>
+                    <h1>Good to see<br><em>you here.</em></h1>
+                    <p data-profile-greeting>Keep track of your applications and find your next opportunity.</p>
+                </div>
+                <a href="/events.html" class="button button-primary">Find opportunities →</a>
+            </div>
+            <nav class="dashboard-nav" aria-label="Dashboard sections">
+                <a href="#applications">My applications</a>
+                <a href="/events.html">Find opportunities</a>
+            </nav>
+            <p class="notice notice-info" data-dashboard-message role="status" aria-live="polite">Sign in to view your applications.</p>
+            <section class="dash-section" id="applications">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Your community work</span>
+                        <h2>My applications</h2>
+                    </div>
+                </div>
+                <div class="empty-state compact" data-volunteer-applications>
+                    <div class="empty-icon">♡</div>
+                    <h3>Your next step starts here.</h3>
+                    <p>When you apply for an opportunity, you can follow its progress here.</p>
+                    <a href="/events.html" class="button button-secondary">Explore opportunities →</a>
+                </div>
+            </section>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <a href="/index.html">Volunteer Connect</a>
+            <a href="/events.html">Find opportunities</a>
+            <span>Built for people who care.</span>
+        </div>
+    </footer>
+    <script type="module" src="/src/auth.js"></script>
