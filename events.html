@@ -2,7 +2,7 @@
 <html lang="en">
     <head><meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Find Organisations | Volunteer Connect</title><link rel="stylesheet" href="src/styles.css">
+        <title>Find Opportunities | Volunteer Connect</title><link rel="stylesheet" href="src/styles.css">
     </head>
 <body>
     <header class="site-header">
@@ -12,7 +12,7 @@
                 <span class="logo-type">volunteer<span>connect</span></span>
             </a>
             <nav class="main-nav" aria-label="Main navigation">
-                <a href="/events.html" class="active">Find organisations</a>
+                <a href="/events.html" class="active">Find opportunities</a>
                 <a href="/how-it-works.html">How it works</a>
                 <a href="/about.html">Our story</a>
                 <span class="nav-divider"></span>
@@ -27,18 +27,37 @@
                 <span class="eyebrow">Find your next step</span>
                 <h1>Find a place to<br><em>do good.</em></h1>
             </div>
-            <p>Choose an approved organisation and apply to volunteer with the work that matters to you.</p>
+            <p>Browse live volunteer opportunities and approved organisations, then apply to get involved.</p>
         </section>
         <section class="events-shell">
             <div class="filter-bar">
                 <label class="search-field">
                     <span aria-hidden="true">⌕</span>
-                    <input type="search" placeholder="Search organisations" aria-label="Search organisations" data-organisation-search>
+                    <input type="search" placeholder="Search opportunities and organisations" aria-label="Search opportunities and organisations" data-catalogue-search>
                 </label>
                 <label class="filter-select">
                     <span aria-hidden="true">⌖</span>
-                    <input type="search" placeholder="Any location" aria-label="Filter by location" data-organisation-location>
+                    <input type="search" placeholder="Any location" aria-label="Filter by location" data-catalogue-location>
                 </label>
+            </div>
+            <div class="section-heading catalogue-heading">
+                <div>
+                    <span class="eyebrow">Get involved</span>
+                    <h2>Upcoming opportunities</h2>
+                </div>
+            </div>
+            <p class="notice notice-info" role="status" aria-live="polite" data-events-message>Loading opportunities…</p>
+            <div class="events-grid" data-events-list></div>
+            <div class="empty-state" data-events-empty hidden>
+                <div class="empty-icon">♡</div>
+                <h3 data-events-empty-title>No upcoming opportunities are available right now</h3>
+                <p data-events-empty-description>Published upcoming opportunities from approved organisations will appear here.</p>
+            </div>
+            <div class="section-heading catalogue-heading">
+                <div>
+                    <span class="eyebrow">Find your community</span>
+                    <h2>Organisations to volunteer with</h2>
+                </div>
             </div>
             <p class="notice notice-info" role="status" aria-live="polite" data-organisations-message>Loading organisations…</p>
             <div class="events-grid" data-organisations-list></div>
