@@ -348,7 +348,7 @@ app.get('/api/organisations', requireConfigured, async (req, res, next) => {
   try {
     const filters = organisationFilterSchema.parse(req.query)
     const { data, error } = await publicDb.from('organisations')
-      .select('id, name, description, location, website')
+      .select('id, name, description, location, website, image_url')
       .eq('approval_status', 'approved')
       .order('name', { ascending: true })
     if (error) throw fail('Organisations could not be loaded right now.', 500, 'ORGANISATIONS_QUERY_FAILED')
@@ -360,6 +360,19 @@ app.get('/api/organisations', requireConfigured, async (req, res, next) => {
         && (!location || organisation.location.toLocaleLowerCase().includes(location))
     })
     res.json({ organisations })
+  } catch (error) { next(error) }
+})
+
+app.get('/api/organisations/:id', requireConfigured, async (req, res, next) => {
+  try {
+    if (req.params.id === 'me') return next()
+    const { data, error } = await publicDb.from('organisations')
+      .select('id, name, description, location, website, image_url')
+      .eq('id', req.params.id)
+      .eq('approval_status', 'approved')
+      .maybeSingle()
+    if (error || !data) throw fail('Organisation not found.', 404, 'NOT_FOUND')
+    res.json({ organisation: data })
   } catch (error) { next(error) }
 })
 

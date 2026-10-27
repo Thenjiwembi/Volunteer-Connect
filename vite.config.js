@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 const pages = [
   'index.html',
   'events.html',
+  'organisation-details.html',
   'event-details.html',
   'about.html',
   'how-it-works.html',

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Learn about a community organisation and apply to volunteer with them.">
+        <title>Organisation | Volunteer Connect</title>
+        <link rel="stylesheet" href="src/styles.css">
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="header-inner">
+                <a href="/index.html" class="logo">
+                    <span class="logo-mark"><span>V</span><span>C</span></span>
+                    <span class="logo-type">volunteer<span>connect</span></span>
+                </a>
+                <nav class="main-nav" aria-label="Main navigation">
+                    <a href="/events.html" class="active">Find organizations</a>
+                    <a href="/how-it-works.html">How it works</a>
+                    <a href="/about.html">Our story</a>
+                    <span class="nav-divider"></span>
+                    <a href="/login.html" class="nav-login">Log in</a>
+                    <a href="/register-volunteer.html" class="button button-small">Join the movement →</a>
+                </nav>
+            </div>
+        </header>
+        <main class="page-shell">
+            <section class="organisation-detail-shell">
+                <a href="/events.html" class="back-link"><span class="back-arrow">→</span> All organisations</a>
+                <p class="notice notice-info" role="status" aria-live="polite" data-organisation-detail-message>Loading organisation…</p>
+                <article class="organisation-detail" data-organisation-detail hidden>
+                    <div class="organisation-detail-image" data-organisation-detail-image>
+                        <div class="organisation-detail-fallback" data-organisation-detail-fallback aria-hidden="true"></div>
+                    </div>
+                    <div class="organisation-detail-content">
+                        <span class="eyebrow" data-organisation-detail-location></span>
+                        <h1 data-organisation-detail-name></h1>
+                        <div class="detail-prose"><p data-organisation-detail-description></p></div>
+                        <a class="text-link" data-organisation-detail-website hidden target="_blank" rel="noopener noreferrer">Visit organisation website</a>
+                    </div>
+                    <aside class="organisation-apply-panel">
+                        <span class="eyebrow">Get involved</span>
+                        <h2>Volunteer with them</h2>
+                        <p>Introduce yourself and let the organisation know why you would like to help.</p>
+                        <form data-organisation-detail-application>
+                            <label for="application-message">Your message <span>(optional)</span></label>
+                            <textarea id="application-message" name="application_message" maxlength="1000" rows="5" placeholder="Tell them a little about yourself…"></textarea>
+                            <button type="submit" class="button button-primary full-width">Apply to volunteer</button>
+                        </form>
+                    </aside>
+                </article>
+            </section>
+        </main>
+        <script type="module" src="/src/organisation-details.js"></script>
+    </body>
+</html>

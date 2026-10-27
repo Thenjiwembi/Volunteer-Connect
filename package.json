@@ -12,7 +12,7 @@
     "build": "vite build",
     "start": "NODE_ENV=production node server/index.js",
     "test": "node --test tests/*.test.js",
-    "check": "node --check server/index.js && node --check server/validation.js && node --check server/http-errors.js && node --check src/auth.js && node --check src/organisations.js"
+    "check": "node --check server/index.js && node --check server/validation.js && node --check server/http-errors.js && node --check src/auth.js && node --check src/organisations.js && node --check src/organisation-details.js && node --check src/events.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",

@@ -16,7 +16,8 @@ export const organisationSchema = z.object({
   contact_email: z.string().email(),
   contact_phone: z.string().trim().max(40).optional().or(z.literal('')),
   location: z.string().trim().min(2).max(160),
-  website: z.string().url().optional().or(z.literal(''))
+  website: z.string().url().optional().or(z.literal('')),
+  image_url: z.string().url().refine((value) => value.startsWith('https://'), 'Use a secure HTTPS image URL.').optional().or(z.literal(''))
 })
 
 const registrationFields = {

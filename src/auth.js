@@ -101,7 +101,8 @@ async function handleRegistration(form, role) {
       contact_email: values.contact_email,
       contact_phone: values.contact_phone,
       location: values.location,
-      website: values.website
+      website: values.website,
+      image_url: values.image_url
     }
   }
   const response = await fetch('/api/auth/register', {
@@ -380,17 +381,37 @@ async function loadVolunteerDashboard() {
 }
 
 async function loadOrganisationDashboard() {
-  const [{ events }, { registrations }, { applications }] = await Promise.all([
+  const [{ organisation }, { events }, { registrations }, { applications }] = await Promise.all([
+    fetchJson('/api/organisations/me'),
     fetchJson('/api/organisations/me/events'),
     fetchJson('/api/organisations/me/registrations'),
     fetchJson('/api/organisations/me/volunteer-applications')
   ])
+  const profileForm = document.querySelector('[data-organisation-profile-form]')
+  if (profileForm && organisation) {
+    for (const [field, value] of Object.entries(organisation)) {
+      const input = profileForm.elements.namedItem(field)
+      if (input) input.value = value || ''
+    }
+  }
+  const approvalStatus = document.querySelector('[data-organisation-status]')
+  if (approvalStatus && organisation) {
+    approvalStatus.textContent = organisation.approval_status === 'approved' ? 'Approved' : 'Approval pending'
+    approvalStatus.className = `status-pill ${organisation.approval_status === 'approved' ? 'status-success' : 'status-accent'}`
+  }
+  const eventForm = document.querySelector('[data-organisation-event-form]')
+  if (eventForm && organisation) {
+    eventForm.elements.location.value = organisation.location || ''
+    const publishOption = eventForm.elements.status.querySelector('option[value="published"]')
+    publishOption.disabled = organisation.approval_status !== 'approved'
+    if (organisation.approval_status === 'approved') eventForm.elements.status.value = 'published'
+  }
   const eventCards = events.map((event) => {
     const card = element('article', undefined, 'admin-list-card')
     card.append(element('h3', event.title), element('p', `${event.location} · ${event.event_date} · ${event.status}`))
     return card
   })
-  setList(document.querySelector('[data-organisation-events]'), eventCards, 'No opportunities have been created yet.')
+  setList(document.querySelector('[data-organisation-events]'), eventCards, 'No events have been created yet.')
   const applicationCards = registrations.map((registration) => {
     const card = element('article', undefined, 'admin-list-card')
     card.append(
@@ -432,6 +453,44 @@ async function setupDashboard() {
       const { error } = await requireSupabase().auth.signOut()
       if (error) showDashboardMessage(error.message, 'error')
       else window.location.assign('/login.html')
+    })
+  }
+  const organisationProfileForm = document.querySelector('[data-organisation-profile-form]')
+  if (organisationProfileForm) {
+    organisationProfileForm.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      setBusy(organisationProfileForm, true)
+      try {
+        await apiRequest('/api/organisations/me', {
+          method: 'PUT',
+          body: JSON.stringify(formData(organisationProfileForm))
+        })
+        showDashboardMessage('Your public organisation profile has been updated.', 'success')
+      } catch (error) {
+        showDashboardMessage(error.message || 'Your organisation profile could not be updated.', 'error')
+      } finally {
+        setBusy(organisationProfileForm, false)
+      }
+    })
+  }
+  const organisationEventForm = document.querySelector('[data-organisation-event-form]')
+  if (organisationEventForm) {
+    organisationEventForm.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      setBusy(organisationEventForm, true)
+      const values = formData(organisationEventForm)
+      values.capacity = Number(values.capacity)
+      try {
+        await apiRequest('/api/events', { method: 'POST', body: JSON.stringify(values) })
+        showDashboardMessage(values.status === 'published' ? 'Your event is published for volunteers.' : 'Your event has been saved as a draft.', 'success')
+        organisationEventForm.reset()
+        organisationEventForm.elements.capacity.value = '10'
+        await loadOrganisationDashboard()
+      } catch (error) {
+        showDashboardMessage(error.message || 'The event could not be created.', 'error')
+      } finally {
+        setBusy(organisationEventForm, false)
+      }
     })
   }
   if (!supabase) {

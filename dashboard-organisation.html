@@ -14,7 +14,7 @@
                 <span class="logo-type">volunteer<span>connect</span></span>
             </a>
             <nav class="main-nav" aria-label="Main navigation">
-                <a href="/events.html">Find opportunities</a>
+                <a href="/events.html">Find organizations</a>
                 <a href="/how-it-works.html">How it works</a>
                 <a href="/about.html">Our story</a>
                 <span class="nav-divider"></span>
@@ -29,21 +29,40 @@
                 <div>
                     <span class="eyebrow">Organisation space</span>
                     <h1>Make good work<br><em>happen.</em></h1>
-                    <p data-profile-greeting>Manage your organisation profile and volunteer applications.</p>
+                    <p data-profile-greeting>Manage your organization profile and volunteer applications.</p>
                 </div>
                 <span class="status-pill status-accent" data-organisation-status>Approval required</span>
             </div>
             <nav class="dashboard-nav" aria-label="Dashboard sections">
                 <a href="#overview">Overview</a>
-                <a href="#opportunities">Opportunities</a>
+                <a href="#events">Events</a>
                 <a href="#applications">Applications</a>
             </nav>
             <section class="dash-section" id="overview">
                 <div class="notice notice-info" data-dashboard-message role="status" aria-live="polite">
-                    Organisation dashboard data is available after signing in and connecting your organisation account.
+                    Organization dashboard data is available after signing in and connecting your organization account.
                 </div>
+                <form class="organisation-profile-form" data-organisation-profile-form>
+                    <div class="section-heading">
+                        <div>
+                            <span class="eyebrow">Public profile</span>
+                            <h2>Tell volunteers about your work</h2>
+                        </div>
+                    </div>
+                    <div class="profile-form">
+                        <div class="field"><label for="organisation-name">Organisation name</label><input id="organisation-name" name="name" required minlength="2" maxlength="160"></div>
+                        <div class="field"><label for="organisation-location">Location</label><input id="organisation-location" name="location" required minlength="2" maxlength="160"></div>
+                        <div class="field span-two"><label for="organisation-description">What does your organisation do?</label><textarea id="organisation-description" name="description" required minlength="20" maxlength="2000"></textarea></div>
+                        <div class="field"><label for="organisation-contact-email">Contact email</label><input id="organisation-contact-email" name="contact_email" type="email" required></div>
+                        <div class="field"><label for="organisation-contact-phone">Contact phone</label><input id="organisation-contact-phone" name="contact_phone" type="tel" maxlength="40"></div>
+                        <div class="field"><label for="organisation-website">Website</label><input id="organisation-website" name="website" type="url"></div>
+                        <div class="field"><label for="organisation-image-url">Work photo URL</label><input id="organisation-image-url" name="image_url" type="url" placeholder="https://…" aria-describedby="organisation-image-help"><small id="organisation-image-help">Use a public HTTPS image showing your organisation’s work.</small></div>
+                        <input type="hidden" name="registration_number">
+                        <div class="form-actions span-two"><button type="submit" class="button button-primary">Save public profile</button></div>
+                    </div>
+                </form>
             </section>
-            <section class="dash-section" id="opportunities">
+            <section class="dash-section" id="events">
                 <div class="section-heading">
                     <div>
                         <span class="eyebrow">Your community work</span>
@@ -52,9 +71,28 @@
                 </div>
                 <div class="empty-state compact" data-organisation-events>
                     <h3>There are no events listed yet.</h3>
-                    <p>Once approved, volunteers can find your organisation and apply to help.</p>
-                    <a href="/contact.html" class="text-link">Contact our team →</a>
+                    <p>Once approved, volunteers can find your organization and apply to help.</p>
                 </div>
+                <form class="event-form organisation-event-form" data-organisation-event-form>
+                    <div class="section-heading">
+                        <div>
+                            <span class="eyebrow">Create an opportunity</span>
+                            <h2>Add a volunteer event</h2>
+                        </div>
+                    </div>
+                    <div class="profile-form">
+                        <div class="field"><label for="event-title">Event title</label><input id="event-title" name="title" required minlength="5" maxlength="160"></div>
+                        <div class="field"><label for="event-category">Category</label><input id="event-category" name="category" required minlength="2" maxlength="80" placeholder="Community, education, environment…"></div>
+                        <div class="field span-two"><label for="event-description">What will volunteers do?</label><textarea id="event-description" name="description" required minlength="30" maxlength="3000"></textarea></div>
+                        <div class="field"><label for="event-location">Location</label><input id="event-location" name="location" required minlength="2" maxlength="160"></div>
+                        <div class="field"><label for="event-date">Date</label><input id="event-date" name="event_date" type="date" required></div>
+                        <div class="field"><label for="event-start-time">Starts</label><input id="event-start-time" name="start_time" type="time" required></div>
+                        <div class="field"><label for="event-end-time">Ends</label><input id="event-end-time" name="end_time" type="time" required></div>
+                        <div class="field"><label for="event-capacity">Volunteer places</label><input id="event-capacity" name="capacity" type="number" min="1" max="100000" required value="10"></div>
+                        <div class="field"><label for="event-status">Visibility</label><select id="event-status" name="status"><option value="draft">Save as draft</option><option value="published">Publish for volunteers</option></select><small data-event-publish-help>Only approved organisations can publish events.</small></div>
+                        <div class="form-actions span-two"><button type="submit" class="button button-primary">Add event</button></div>
+                    </div>
+                </form>
             </section>
             <section class="dash-section" id="applications">
                 <div class="section-heading">
@@ -64,7 +102,7 @@
                     </div>
                 </div>
                 <div class="empty-state compact" data-organisation-applications>
-                    <p>Volunteer applications for your organisation will appear here.</p>
+                    <p>Volunteer applications for your organization will appear here.</p>
                 </div>
             </section>
         </section>

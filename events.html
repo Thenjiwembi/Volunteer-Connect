@@ -2,7 +2,7 @@
 <html lang="en">
     <head><meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Find Opportunities | Volunteer Connect</title><link rel="stylesheet" href="src/styles.css">
+        <title>Find Organizations | Volunteer Connect</title><link rel="stylesheet" href="src/styles.css">
     </head>
 <body>
     <header class="site-header">
@@ -12,7 +12,7 @@
                 <span class="logo-type">volunteer<span>connect</span></span>
             </a>
             <nav class="main-nav" aria-label="Main navigation">
-                <a href="/events.html" class="active">Find opportunities</a>
+                <a href="/events.html" class="active">Find organizations</a>
                 <a href="/how-it-works.html">How it works</a>
                 <a href="/about.html">Our story</a>
                 <span class="nav-divider"></span>
@@ -27,13 +27,13 @@
                 <span class="eyebrow">Find your next step</span>
                 <h1>Find a place to<br><em>do good.</em></h1>
             </div>
-            <p>Browse live volunteer opportunities and approved organisations, then apply to get involved.</p>
+            <p>Browse approved organizations, learn about their work, and apply to volunteer.</p>
         </section>
         <section class="events-shell">
             <div class="filter-bar">
                 <label class="search-field">
                     <span aria-hidden="true">⌕</span>
-                    <input type="search" placeholder="Search opportunities and organisations" aria-label="Search opportunities and organisations" data-catalogue-search>
+                    <input type="search" placeholder="Search organizations" aria-label="Search organizations" data-catalogue-search>
                 </label>
                 <label class="filter-select">
                     <span aria-hidden="true">⌖</span>
@@ -43,32 +43,34 @@
             <div class="section-heading catalogue-heading">
                 <div>
                     <span class="eyebrow">Get involved</span>
-                    <h2>Upcoming opportunities</h2>
+                    <h2>Organizations to volunteer with</h2>
                 </div>
             </div>
-            <p class="notice notice-info" role="status" aria-live="polite" data-events-message>Loading opportunities…</p>
-            <div class="events-grid" data-events-list></div>
-            <div class="empty-state" data-events-empty hidden>
-                <div class="empty-icon">♡</div>
-                <h3 data-events-empty-title>No upcoming opportunities are available right now</h3>
-                <p data-events-empty-description>Published upcoming opportunities from approved organisations will appear here.</p>
-            </div>
-            <div class="section-heading catalogue-heading">
-                <div>
-                    <span class="eyebrow">Find your community</span>
-                    <h2>Organisations to volunteer with</h2>
-                </div>
-            </div>
-            <p class="notice notice-info" role="status" aria-live="polite" data-organisations-message>Loading organisations…</p>
+            <p class="notice notice-info" role="status" aria-live="polite" data-organisations-message>Loading organizations…</p>
             <div class="events-grid" data-organisations-list></div>
             <div class="empty-state" data-organisations-empty hidden>
                 <div class="empty-icon">♡</div>
-                <h3 data-organisations-empty-title>No approved organisations are listed right now</h3>
-                <p data-organisations-empty-description>Approved community organisations will appear here when they join.</p>
+                <h3 data-organisations-empty-title>No approved organizations are listed right now</h3>
+                <p data-organisations-empty-description>Approved community organizations will appear here when they join.</p>
                 <a href="/contact.html" class="text-link">Contact our team →</a>
+            </div>
+        </section>
+        <section class="events-shell volunteer-events-section" id="upcoming-events">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Dates to get involved</span>
+                    <h2>Upcoming volunteer events</h2>
+                </div>
+            </div>
+            <p class="notice notice-info" role="status" aria-live="polite" data-volunteer-events-message>Loading upcoming events…</p>
+            <div class="events-grid" data-volunteer-events-list></div>
+            <div class="empty-state" data-volunteer-events-empty hidden>
+                <h3>No upcoming events yet</h3>
+                <p>Published events from approved organisations will appear here.</p>
             </div>
         </section>
     </main>
     <script type="module" src="/src/organisations.js"></script>
+    <script type="module" src="/src/events.js"></script>
   </body>
 </html>

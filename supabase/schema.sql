@@ -29,7 +29,7 @@ create table if not exists public.organisations (
   owner_user_id uuid not null references public.profiles(id) on delete cascade unique,
   name text not null check (char_length(trim(name)) >= 2), description text,
   registration_number text, contact_email text not null, contact_phone text,
-  location text not null, website text,
+  location text not null, website text, image_url text,
   approval_status public.approval_status not null default 'pending',
   reviewed_by uuid references public.profiles(id) on delete set null, reviewed_at timestamptz,
   created_at timestamptz not null default timezone('utc', now()), updated_at timestamptz not null default timezone('utc', now())
@@ -669,7 +669,7 @@ grant select, update on public.profiles to service_role;
 
 drop policy if exists organisations_admin_update on public.organisations;
 revoke update on public.organisations from public, anon, authenticated;
-grant update (name, description, registration_number, contact_email, contact_phone, location, website)
+grant update (name, description, registration_number, contact_email, contact_phone, location, website, image_url)
   on public.organisations to authenticated;
 grant insert, update on public.organisations to service_role;
 

@@ -9,6 +9,8 @@ test('profile validation accepts a clear profile and rejects a too-short name', 
 
 test('organisation validation requires a real contact email and meaningful description', () => {
   assert.equal(organisationSchema.safeParse({ name: 'Neighbourhood Pantry', description: 'A community pantry supporting families with weekly food parcels.', contact_email: 'team@example.test', location: 'Cape Town' }).success, true)
+  assert.equal(organisationSchema.safeParse({ name: 'Neighbourhood Pantry', description: 'A community pantry supporting families with weekly food parcels.', contact_email: 'team@example.test', location: 'Cape Town', image_url: 'https://images.example.test/pantry.jpg' }).success, true)
+  assert.equal(organisationSchema.safeParse({ name: 'Neighbourhood Pantry', description: 'A community pantry supporting families with weekly food parcels.', contact_email: 'team@example.test', location: 'Cape Town', image_url: 'http://images.example.test/pantry.jpg' }).success, false)
   assert.equal(organisationSchema.safeParse({ name: 'Pantry', description: 'Short', contact_email: 'not-an-email', location: '' }).success, false)
 })
 
