@@ -1,0 +1,182 @@
+import { createClient } from '@supabase/supabase-js'
+
+const organisationList = document.querySelector('[data-organisations-list]')
+const organisationMessage = document.querySelector('[data-organisations-message]')
+const emptyState = document.querySelector('[data-organisations-empty]')
+const emptyStateTitle = document.querySelector('[data-organisations-empty-title]')
+const emptyStateDescription = document.querySelector('[data-organisations-empty-description]')
+const searchInput = document.querySelector('[data-organisation-search]')
+const locationInput = document.querySelector('[data-organisation-location]')
+
+function showMessage(message, type = 'info', link) {
+  organisationMessage.replaceChildren(document.createTextNode(message))
+  if (link) {
+    const anchor = document.createElement('a')
+    anchor.href = link.href
+    anchor.textContent = link.label
+    anchor.className = 'text-link'
+    organisationMessage.append(document.createTextNode(' '), anchor)
+  }
+  organisationMessage.className = `notice notice-${type}`
+  organisationMessage.hidden = false
+}
+
+function hideMessage() {
+  organisationMessage.hidden = true
+}
+
+function createOrganisationCard(organisation) {
+  const card = document.createElement('article')
+  card.className = 'event-card'
+
+  const image = document.createElement('div')
+  image.className = 'event-card-image'
+
+  const initial = document.createElement('span')
+  initial.className = 'event-category'
+  initial.textContent = organisation.location
+
+  const illustration = document.createElement('div')
+  illustration.className = 'event-illustration'
+  const mark = document.createElement('span')
+  mark.textContent = organisation.name.charAt(0).toUpperCase()
+  illustration.append(mark)
+  image.append(initial, illustration)
+
+  const body = document.createElement('div')
+  body.className = 'event-card-body'
+  const title = document.createElement('h3')
+  title.textContent = organisation.name
+  const description = document.createElement('p')
+  description.textContent = organisation.description
+  const actions = document.createElement('div')
+  actions.className = 'organisation-card-actions'
+  const message = document.createElement('textarea')
+  message.maxLength = 1000
+  message.rows = 3
+  message.placeholder = 'Introduce yourself (optional)'
+  message.setAttribute('aria-label', `Message to ${organisation.name}`)
+  const button = document.createElement('button')
+  button.type = 'button'
+  button.className = 'button button-primary full-width'
+  button.textContent = 'Apply to volunteer'
+  button.dataset.organisationApply = organisation.id
+  actions.append(message, button)
+  body.append(title, description)
+  if (organisation.website && /^https?:\/\//i.test(organisation.website)) {
+    const website = document.createElement('a')
+    website.className = 'text-link'
+    website.href = organisation.website
+    website.target = '_blank'
+    website.rel = 'noopener noreferrer'
+    website.textContent = 'Visit website'
+    body.append(website)
+  }
+  body.append(actions)
+  card.append(image, body)
+  return card
+}
+
+let supabase
+async function getAccessToken() {
+  if (!supabase) {
+    let url = import.meta.env.VITE_SUPABASE_URL
+    let key = import.meta.env.VITE_SUPABASE_ANON_KEY
+    if (!url || !key) {
+      const response = await fetch('/api/config')
+      if (!response.ok) throw new Error('Authentication settings could not be loaded.')
+      const config = await response.json()
+      url = config.supabaseUrl
+      key = config.supabaseAnonKey
+    }
+    if (!url || !key) throw new Error('Authentication is not configured. Contact the site administrator.')
+    supabase = createClient(url, key, {
+      auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+    })
+  }
+  const { data, error } = await supabase.auth.getSession()
+  if (error) throw new Error('Your sign-in session could not be checked. Please sign in again.')
+  if (!data.session?.access_token) throw new Error('Sign in as a volunteer to apply.')
+  return data.session.access_token
+}
+
+let requestId = 0
+async function loadOrganisations() {
+  const currentRequestId = ++requestId
+  const params = new URLSearchParams()
+  if (searchInput.value.trim()) params.set('search', searchInput.value.trim())
+  if (locationInput.value.trim()) params.set('location', locationInput.value.trim())
+
+  showMessage('Loading organisations…')
+  emptyState.hidden = true
+
+  try {
+    const query = params.toString()
+    const response = await fetch(`/api/organisations${query ? `?${query}` : ''}`)
+    let payload
+    try {
+      payload = await response.json()
+    } catch {
+      throw new Error('The server returned an invalid response while loading organisations.')
+    }
+    if (!response.ok) throw new Error(payload.error?.message || 'Organisations could not be loaded.')
+    if (!Array.isArray(payload.organisations)) throw new Error('The server returned an invalid organisation list.')
+    if (currentRequestId !== requestId) return
+
+    organisationList.replaceChildren(...payload.organisations.map(createOrganisationCard))
+    if (payload.organisations.length === 0) {
+      const hasFilters = params.size > 0
+      emptyStateTitle.textContent = hasFilters
+        ? 'No organisations match your search'
+        : 'No approved organisations are listed right now'
+      emptyStateDescription.textContent = hasFilters
+        ? 'Try another search or location.'
+        : 'Approved community organisations will appear here when they join.'
+    }
+    emptyState.hidden = payload.organisations.length > 0
+    hideMessage()
+  } catch (error) {
+    if (currentRequestId !== requestId) return
+    organisationList.replaceChildren()
+    emptyState.hidden = true
+    showMessage(error.message || 'Organisations could not be loaded. Please try again.', 'error')
+  }
+}
+
+organisationList.addEventListener('click', async (event) => {
+  const button = event.target.closest('[data-organisation-apply]')
+  if (!button) return
+  button.disabled = true
+  try {
+    const token = await getAccessToken()
+    const response = await fetch(`/api/organisations/${encodeURIComponent(button.dataset.organisationApply)}/applications`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ application_message: button.parentElement.querySelector('textarea').value })
+    })
+    const payload = await response.json()
+    if (!response.ok) {
+      if (response.status === 401) throw new Error('Sign in as a volunteer to apply.')
+      throw new Error(payload.error?.message || 'Your application could not be submitted.')
+    }
+    button.textContent = 'Application sent'
+    showMessage('Your volunteer application has been sent.', 'success')
+  } catch (error) {
+    button.disabled = false
+    showMessage(error.message || 'Your application could not be submitted.', 'error',
+      error.message?.includes('Sign in') ? { href: '/login.html', label: 'Log in' } : undefined)
+  }
+})
+
+let searchTimeout
+for (const input of [searchInput, locationInput]) {
+  input.addEventListener('input', () => {
+    clearTimeout(searchTimeout)
+    searchTimeout = setTimeout(loadOrganisations, 250)
+  })
+}
+
+loadOrganisations()

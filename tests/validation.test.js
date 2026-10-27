@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { eventSchema, profileUpdateSchema, organisationSchema, signupSchema, adminSignupSchema, getAccountAccessFailure, canPublish, isAllowedEventTransition } from '../server/validation.js'
+import { eventSchema, profileUpdateSchema, organisationSchema, signupSchema, adminSignupSchema, organisationApplicationStatusSchema, applicationSchema, getAccountAccessFailure, canPublish, isAllowedEventTransition } from '../server/validation.js'
 
 test('profile validation accepts a clear profile and rejects a too-short name', () => {
   assert.equal(profileUpdateSchema.safeParse({ full_name: 'Amina Ndlovu', phone: '', location: 'Cape Town' }).success, true)
@@ -45,6 +45,15 @@ test('event validation protects capacity and time ordering', () => {
   assert.equal(eventSchema.safeParse(valid).success, true)
   assert.equal(eventSchema.safeParse({ ...valid, capacity: 0 }).success, false)
   assert.equal(eventSchema.safeParse({ ...valid, start_time: '13:00', end_time: '12:00' }).success, false)
+})
+
+test('organisation applications accept optional messages and only valid review decisions', () => {
+  assert.equal(applicationSchema.safeParse({}).success, true)
+  assert.equal(applicationSchema.safeParse({ application_message: 'I would like to help.' }).success, true)
+  assert.equal(applicationSchema.safeParse({ application_message: 'x'.repeat(1001) }).success, false)
+  assert.equal(organisationApplicationStatusSchema.safeParse({ status: 'accepted' }).success, true)
+  assert.equal(organisationApplicationStatusSchema.safeParse({ status: 'rejected' }).success, true)
+  assert.equal(organisationApplicationStatusSchema.safeParse({ status: 'withdrawn' }).success, false)
 })
 
 test('publication requires an active approved organisation profile', () => {

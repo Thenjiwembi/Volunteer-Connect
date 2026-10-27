@@ -60,10 +60,16 @@ export const eventFilterSchema = z.object({
   available: z.string().optional()
 })
 
+export const organisationFilterSchema = z.object({
+  search: z.string().trim().max(120).optional(),
+  location: z.string().trim().max(120).optional()
+})
+
 export const applicationSchema = z.object({
   application_message: z.string().trim().max(1000).optional().or(z.literal(''))
 })
 
+export const organisationApplicationStatusSchema = z.object({ status: z.enum(['accepted', 'rejected']) })
 export const approvalSchema = z.object({ approval_status: z.enum(['approved', 'rejected']) })
 export const registrationStatusSchema = z.object({ status: z.enum(['accepted', 'rejected', 'withdrawn']) })
 export const attendanceSchema = z.object({ attendance_status: z.enum(['present', 'absent', 'not_recorded']) })

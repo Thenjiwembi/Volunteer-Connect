@@ -344,9 +344,12 @@ async function loadAdminDashboard() {
 }
 
 async function loadVolunteerDashboard() {
-  const { registrations } = await fetchJson('/api/registrations/me')
+  const [{ registrations }, { applications }] = await Promise.all([
+    fetchJson('/api/registrations/me'),
+    fetchJson('/api/organisation-applications/me')
+  ])
   const container = document.querySelector('[data-volunteer-applications]')
-  const items = registrations.map((registration) => {
+  const eventItems = registrations.map((registration) => {
     const card = element('article', undefined, 'admin-list-card')
     const event = registration.events
     card.append(
@@ -356,13 +359,31 @@ async function loadVolunteerDashboard() {
     )
     return card
   })
-  setList(container, items, 'You have not applied to an opportunity yet.')
+  const organisationItems = applications.map((application) => {
+    const card = element('article', undefined, 'admin-list-card')
+    card.append(
+      element('h3', application.organisations?.name || 'Community organisation'),
+      element('p', `${application.organisations?.location || ''} · Applied ${new Date(application.applied_at).toLocaleDateString()}`),
+      element('span', application.status, 'status-pill')
+    )
+    if (application.application_message) card.append(element('p', application.application_message))
+    if (['pending', 'accepted'].includes(application.status)) {
+      const withdraw = element('button', 'Withdraw application', 'button button-secondary')
+      withdraw.type = 'button'
+      withdraw.dataset.organisationApplicationAction = 'withdraw'
+      withdraw.dataset.applicationId = application.id
+      card.append(withdraw)
+    }
+    return card
+  })
+  setList(container, [...organisationItems, ...eventItems], 'You have not applied to an organisation yet.')
 }
 
 async function loadOrganisationDashboard() {
-  const [{ events }, { registrations }] = await Promise.all([
+  const [{ events }, { registrations }, { applications }] = await Promise.all([
     fetchJson('/api/organisations/me/events'),
-    fetchJson('/api/organisations/me/registrations')
+    fetchJson('/api/organisations/me/registrations'),
+    fetchJson('/api/organisations/me/volunteer-applications')
   ])
   const eventCards = events.map((event) => {
     const card = element('article', undefined, 'admin-list-card')
@@ -378,7 +399,28 @@ async function loadOrganisationDashboard() {
     )
     return card
   })
-  setList(document.querySelector('[data-organisation-applications]'), applicationCards, 'There are no volunteer applications yet.')
+  const organisationApplicationCards = applications.map((application) => {
+    const card = element('article', undefined, 'admin-list-card')
+    card.append(
+      element('h3', application.profiles?.full_name || 'Volunteer'),
+      element('p', `${application.profiles?.email || ''} · ${application.profiles?.location || ''} · Applied ${new Date(application.applied_at).toLocaleDateString()}`),
+      element('span', application.status, 'status-pill')
+    )
+    if (application.application_message) card.append(element('p', application.application_message))
+    if (application.status === 'pending') {
+      const actions = element('div', undefined, 'admin-list-actions')
+      for (const [status, label] of [['accepted', 'Accept'], ['rejected', 'Decline']]) {
+        const button = element('button', label, 'button button-secondary')
+        button.type = 'button'
+        button.dataset.organisationApplicationAction = status
+        button.dataset.applicationId = application.id
+        actions.append(button)
+      }
+      card.append(actions)
+    }
+    return card
+  })
+  setList(document.querySelector('[data-organisation-applications]'), [...organisationApplicationCards, ...applicationCards], 'There are no volunteer applications yet.')
 }
 
 async function setupDashboard() {
@@ -429,6 +471,31 @@ async function setupDashboard() {
 }
 
 document.addEventListener('click', async (event) => {
+  const applicationButton = event.target.closest('[data-organisation-application-action]')
+  if (applicationButton) {
+    applicationButton.disabled = true
+    try {
+      const id = encodeURIComponent(applicationButton.dataset.applicationId)
+      if (applicationButton.dataset.organisationApplicationAction === 'withdraw') {
+        await apiRequest(`/api/organisation-applications/${id}/withdraw`, { method: 'PATCH' })
+        showDashboardMessage('Your organisation application has been withdrawn.', 'success')
+      } else {
+        const status = applicationButton.dataset.organisationApplicationAction
+        await apiRequest(`/api/organisation-applications/${id}/status`, {
+          method: 'PATCH',
+          body: JSON.stringify({ status })
+        })
+        showDashboardMessage(`Volunteer application ${status}.`, 'success')
+      }
+      if (document.body.dataset.dashboardRole === 'volunteer') await loadVolunteerDashboard()
+      else await loadOrganisationDashboard()
+    } catch (error) {
+      showDashboardMessage(error.message || 'The application could not be updated.', 'error')
+      applicationButton.disabled = false
+    }
+    return
+  }
+
   const button = event.target.closest('[data-account-action]')
   if (!button) return
   button.disabled = true

@@ -15,7 +15,9 @@ import {
   organisationSchema,
   eventSchema,
   eventFilterSchema,
+  organisationFilterSchema,
   applicationSchema,
+  organisationApplicationStatusSchema,
   approvalSchema,
   registrationStatusSchema,
   attendanceSchema,
@@ -342,6 +344,25 @@ app.get('/api/events/:id', requireConfigured, async (req, res, next) => {
   } catch (error) { next(error) }
 })
 
+app.get('/api/organisations', requireConfigured, async (req, res, next) => {
+  try {
+    const filters = organisationFilterSchema.parse(req.query)
+    const { data, error } = await publicDb.from('organisations')
+      .select('id, name, description, location, website')
+      .eq('approval_status', 'approved')
+      .order('name', { ascending: true })
+    if (error) throw fail('Organisations could not be loaded right now.', 500, 'ORGANISATIONS_QUERY_FAILED')
+    const search = filters.search?.toLocaleLowerCase()
+    const location = filters.location?.toLocaleLowerCase()
+    const organisations = (data || []).filter((organisation) => {
+      const searchable = `${organisation.name} ${organisation.description || ''} ${organisation.location}`.toLocaleLowerCase()
+      return (!search || searchable.includes(search))
+        && (!location || organisation.location.toLocaleLowerCase().includes(location))
+    })
+    res.json({ organisations })
+  } catch (error) { next(error) }
+})
+
 app.use('/api', requireAuth)
 
 app.get('/api/profile/me', (req, res) => res.json({ profile: req.auth.profile, user: { id: req.auth.user.id, email: req.auth.user.email } }))
@@ -352,6 +373,65 @@ app.put('/api/profile/me', sensitiveLimit, async (req, res, next) => {
     if (error) throw fail('Profile could not be updated.', 500, 'PROFILE_UPDATE_FAILED')
     req.auth.profile = data
     res.json({ profile: data })
+  } catch (error) { next(error) }
+})
+
+app.post('/api/organisations/:id/applications', sensitiveLimit, requireRole('volunteer'), async (req, res, next) => {
+  try {
+    const values = parseBody(applicationSchema, req.body)
+    const { data, error } = await req.auth.db.rpc('apply_to_organisation', {
+      p_organisation_id: req.params.id,
+      p_message: values.application_message || null
+    })
+    if (error) {
+      const status = error.code === '23505' ? 409 : error.code === '42501' ? 403 : error.code === 'P0002' ? 404 : 400
+      throw fail(error.message || 'Your application could not be submitted.', status, error.code || 'APPLICATION_REJECTED')
+    }
+    res.status(201).json({ application: data })
+  } catch (error) { next(error) }
+})
+app.get('/api/organisation-applications/me', requireRole('volunteer'), async (req, res, next) => {
+  try {
+    const { data, error } = await req.auth.db.from('organisation_applications')
+      .select('*, organisations(id, name, location, website)')
+      .eq('volunteer_id', req.auth.profile.id)
+      .order('applied_at', { ascending: false })
+    if (error) throw fail('Your organisation applications could not be loaded.', 500, 'ORGANISATION_APPLICATIONS_QUERY_FAILED')
+    res.json({ applications: data || [] })
+  } catch (error) { next(error) }
+})
+app.get('/api/organisations/me/volunteer-applications', requireRole('organisation'), async (req, res, next) => {
+  try {
+    const { data, error } = await req.auth.db.rpc('get_organisation_volunteer_applications')
+    if (error) throw fail('Volunteer applications could not be loaded.', 500, 'ORGANISATION_APPLICATIONS_QUERY_FAILED')
+    const applications = (data || []).map((application) => ({
+      ...application,
+      profiles: {
+        id: application.volunteer_id,
+        full_name: application.full_name,
+        email: application.email,
+        location: application.location
+      }
+    }))
+    res.json({ applications })
+  } catch (error) { next(error) }
+})
+app.patch('/api/organisation-applications/:id/status', sensitiveLimit, requireRole('organisation'), async (req, res, next) => {
+  try {
+    const { status } = parseBody(organisationApplicationStatusSchema, req.body)
+    const { data, error } = await req.auth.db.rpc('update_organisation_application_status', {
+      p_application_id: req.params.id,
+      p_status: status
+    })
+    if (error) throw fail(error.message || 'Application status could not be updated.', error.code === 'P0001' ? 409 : error.code === 'P0002' ? 404 : 403, error.code || 'APPLICATION_UPDATE_FAILED')
+    res.json({ application: data })
+  } catch (error) { next(error) }
+})
+app.patch('/api/organisation-applications/:id/withdraw', sensitiveLimit, requireRole('volunteer'), async (req, res, next) => {
+  try {
+    const { data, error } = await req.auth.db.rpc('withdraw_organisation_application', { p_application_id: req.params.id })
+    if (error) throw fail(error.message || 'This application could not be withdrawn.', error.code === 'P0001' ? 409 : error.code === 'P0002' ? 404 : 403, error.code || 'WITHDRAWAL_FAILED')
+    res.json({ application: data })
   } catch (error) { next(error) }
 })
 

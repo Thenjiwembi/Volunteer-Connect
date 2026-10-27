@@ -2,7 +2,7 @@
 <html lang="en">
     <head><meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Find Opportunities | Volunteer Connect</title><link rel="stylesheet" href="src/styles.css">
+        <title>Find Organisations | Volunteer Connect</title><link rel="stylesheet" href="src/styles.css">
     </head>
 <body>
     <header class="site-header">
@@ -12,7 +12,7 @@
                 <span class="logo-type">volunteer<span>connect</span></span>
             </a>
             <nav class="main-nav" aria-label="Main navigation">
-                <a href="/events.html" class="active">Find opportunities</a>
+                <a href="/events.html" class="active">Find organisations</a>
                 <a href="/how-it-works.html">How it works</a>
                 <a href="/about.html">Our story</a>
                 <span class="nav-divider"></span>
@@ -25,39 +25,31 @@
         <section class="page-intro">
             <div>
                 <span class="eyebrow">Find your next step</span>
-                <h1>Good work is<br><em>happening.</em></h1>
+                <h1>Find a place to<br><em>do good.</em></h1>
             </div>
-            <p>Browse local opportunities from organisations building stronger, kinder communities.</p>
+            <p>Choose an approved organisation and apply to volunteer with the work that matters to you.</p>
         </section>
         <section class="events-shell">
             <div class="filter-bar">
                 <label class="search-field">
                     <span aria-hidden="true">⌕</span>
-                    <input type="search" placeholder="Search by keyword" aria-label="Search opportunities">
-                </label>
-                <label class="filter-select">
-                    <span aria-hidden="true">⌄</span>
-                    <select aria-label="Filter by cause">
-                        <option>All causes</option>
-                        <option>Community</option>
-                        <option>Education</option>
-                        <option>Environment</option>
-                        <option>Food security</option>
-                        <option>Youth</option>
-                        <option>Health</option>
-                    </select>
+                    <input type="search" placeholder="Search organisations" aria-label="Search organisations" data-organisation-search>
                 </label>
                 <label class="filter-select">
                     <span aria-hidden="true">⌖</span>
-                    <input type="search" placeholder="Any location" aria-label="Filter by location">
-                </label>
-                <label class="check-filter">
-                    <input type="checkbox"> Show places available
+                    <input type="search" placeholder="Any location" aria-label="Filter by location" data-organisation-location>
                 </label>
             </div>
-            <div class="empty-state">
+            <p class="notice notice-info" role="status" aria-live="polite" data-organisations-message>Loading organisations…</p>
+            <div class="events-grid" data-organisations-list></div>
+            <div class="empty-state" data-organisations-empty hidden>
                 <div class="empty-icon">♡</div>
-                <h3>Live opportunities are waiting to be connected</h3>
-                <p>Once a community organisation posts an opportunity, it will appear here. Get in touch if you need help.</p>
+                <h3 data-organisations-empty-title>No approved organisations are listed right now</h3>
+                <p data-organisations-empty-description>Approved community organisations will appear here when they join.</p>
                 <a href="/contact.html" class="text-link">Contact our team →</a>
             </div>
+        </section>
+    </main>
+    <script type="module" src="/src/organisations.js"></script>
+  </body>
+</html>
