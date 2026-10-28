@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { eventSchema, profileUpdateSchema, organisationSchema, signupSchema, adminSignupSchema, organisationApplicationStatusSchema, applicationSchema, getAccountAccessFailure, canPublish, isAllowedEventTransition } from '../server/validation.js'
+import { eventSchema, profileUpdateSchema, organisationSchema, signupSchema, adminSignupSchema, organisationApplicationStatusSchema, applicationSchema, attendanceSchema, organisationVerificationReviewSchema, volunteerPreferencesSchema, getAccountAccessFailure, canAccessOrganisationReview, canPublish, isAllowedEventTransition } from '../server/validation.js'
 
 test('profile validation accepts a clear profile and rejects a too-short name', () => {
   assert.equal(profileUpdateSchema.safeParse({ full_name: 'Amina Ndlovu', phone: '', location: 'Cape Town' }).success, true)
@@ -40,6 +40,9 @@ test('account access requires verified email and administrator approval', () => 
   assert.equal(getAccountAccessFailure(verifiedUser, { account_status: 'pending' }).code, 'ACCOUNT_PENDING')
   assert.equal(getAccountAccessFailure(verifiedUser, { account_status: 'rejected' }).code, 'ACCOUNT_REJECTED')
   assert.equal(getAccountAccessFailure(verifiedUser, { account_status: 'suspended' }).code, 'ACCOUNT_SUSPENDED')
+  assert.equal(canAccessOrganisationReview(verifiedUser, { role: 'organisation', account_status: 'pending' }), true)
+  assert.equal(canAccessOrganisationReview({}, { role: 'organisation', account_status: 'pending' }), false)
+  assert.equal(canAccessOrganisationReview(verifiedUser, { role: 'volunteer', account_status: 'pending' }), false)
 })
 
 test('event validation protects capacity and time ordering', () => {
@@ -47,6 +50,32 @@ test('event validation protects capacity and time ordering', () => {
   assert.equal(eventSchema.safeParse(valid).success, true)
   assert.equal(eventSchema.safeParse({ ...valid, capacity: 0 }).success, false)
   assert.equal(eventSchema.safeParse({ ...valid, start_time: '13:00', end_time: '12:00' }).success, false)
+  assert.equal(eventSchema.safeParse({ ...valid, start_time: '09:00:00', end_time: '12:00:00' }).success, true)
+  assert.equal(eventSchema.safeParse({ ...valid, required_skills: 'first aid, driving', participation_type: 'hybrid', application_deadline: '2099-06-13' }).success, true)
+  assert.equal(eventSchema.safeParse({ ...valid, application_deadline: '' }).success, true)
+  assert.equal(eventSchema.safeParse({ ...valid, application_deadline: null }).success, true)
+  assert.equal(eventSchema.safeParse({ ...valid, application_deadline: '2099-06-15' }).success, false)
+})
+
+test('verification decisions require feedback unless approved', () => {
+  assert.equal(organisationVerificationReviewSchema.safeParse({ verification_status: 'approved' }).success, true)
+  assert.equal(organisationVerificationReviewSchema.safeParse({ verification_status: 'rejected' }).success, false)
+  assert.equal(organisationVerificationReviewSchema.safeParse({ verification_status: 'more_information_required', feedback: 'Please upload a current registration document.' }).success, true)
+})
+
+test('volunteer preferences default to private and validate bounded choices', () => {
+  const parsed = volunteerPreferencesSchema.parse({})
+  assert.equal(parsed.share_with_organisations, false)
+  assert.deepEqual(parsed.skills, [])
+  assert.equal(volunteerPreferencesSchema.safeParse({ available_days: ['monday', 'someday'] }).success, false)
+  assert.equal(volunteerPreferencesSchema.safeParse({ preferred_distance_km: 501 }).success, false)
+})
+
+test('attendance hours require present status and remain within a day', () => {
+  assert.equal(attendanceSchema.safeParse({ attendance_status: 'present', completed_hours: 3, hours_confirmed: true }).success, true)
+  assert.equal(attendanceSchema.safeParse({ attendance_status: 'absent', completed_hours: 1, hours_confirmed: true }).success, false)
+  assert.equal(attendanceSchema.safeParse({ attendance_status: 'excused', completed_hours: 0 }).success, true)
+  assert.equal(attendanceSchema.safeParse({ attendance_status: 'present', completed_hours: 25 }).success, false)
 })
 
 test('organisation applications accept optional messages and only valid review decisions', () => {

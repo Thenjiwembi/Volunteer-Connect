@@ -6,7 +6,7 @@
         <title>Organisation Space | Volunteer Connect</title>
         <link rel="stylesheet" href="src/styles.css">
     </head>
-<body data-dashboard-role="organisation">
+<body data-dashboard-role="organisation" data-auth-ready="false">
     <header class="site-header">
         <div class="header-inner">
             <a href="/index.html" class="logo">
@@ -36,7 +36,9 @@
             <nav class="dashboard-nav" aria-label="Dashboard sections">
                 <a href="#overview">Overview</a>
                 <a href="#events">Events</a>
+                <a href="#attendance">Attendance</a>
                 <a href="#applications">Applications</a>
+                <a href="#impact">Impact centre</a>
             </nav>
             <section class="dash-section" id="overview">
                 <div class="notice notice-info" data-dashboard-message role="status" aria-live="polite">
@@ -52,6 +54,10 @@
                     <div class="profile-form">
                         <div class="field"><label for="organisation-name">Organisation name</label><input id="organisation-name" name="name" required minlength="2" maxlength="160"></div>
                         <div class="field"><label for="organisation-location">Location</label><input id="organisation-location" name="location" required minlength="2" maxlength="160"></div>
+                        <div class="field"><label for="organisation-province">Province</label><input id="organisation-province" name="province" maxlength="100"></div>
+                        <div class="field"><label for="organisation-city">City</label><input id="organisation-city" name="city" maxlength="100"></div>
+                        <div class="field"><label for="organisation-address">Address or service area</label><input id="organisation-address" name="address" maxlength="240"></div>
+                        <div class="field"><label for="organisation-service-area">Service area</label><input id="organisation-service-area" name="service_area" maxlength="160"></div>
                         <div class="field span-two"><label for="organisation-description">What does your organisation do?</label><textarea id="organisation-description" name="description" required minlength="20" maxlength="2000"></textarea></div>
                         <div class="field"><label for="organisation-contact-email">Contact email</label><input id="organisation-contact-email" name="contact_email" type="email" required></div>
                         <div class="field"><label for="organisation-contact-phone">Contact phone</label><input id="organisation-contact-phone" name="contact_phone" type="tel" maxlength="40"></div>
@@ -61,6 +67,22 @@
                         <div class="form-actions span-two"><button type="submit" class="button button-primary">Save public profile</button></div>
                     </div>
                 </form>
+                <section class="verification-panel" aria-labelledby="verification-heading">
+                    <div class="section-heading">
+                        <div>
+                            <span class="eyebrow">Organisation verification</span>
+                            <h2 id="verification-heading">Verification documents</h2>
+                        </div>
+                        <span class="status-pill status-accent" data-verification-status>Pending</span>
+                    </div>
+                    <p class="verification-feedback" data-verification-feedback hidden></p>
+                    <form class="verification-upload" data-verification-document-form>
+                        <div class="field"><label for="verification-document">Registration or supporting document</label><input id="verification-document" name="document" type="file" accept="application/pdf,image/jpeg,image/png" required><small>PDF, JPEG or PNG, up to 10 MB. Files are private and visible only to your organisation and administrators.</small></div>
+                        <button type="submit" class="button button-secondary">Upload document</button>
+                    </form>
+                    <div class="verification-documents" data-verification-documents></div>
+                    <button class="button button-primary" type="button" data-verification-submit>Submit for verification</button>
+                </section>
             </section>
             <section class="dash-section" id="events">
                 <div class="section-heading">
@@ -89,10 +111,27 @@
                         <div class="field"><label for="event-start-time">Starts</label><input id="event-start-time" name="start_time" type="time" required></div>
                         <div class="field"><label for="event-end-time">Ends</label><input id="event-end-time" name="end_time" type="time" required></div>
                         <div class="field"><label for="event-capacity">Volunteer places</label><input id="event-capacity" name="capacity" type="number" min="1" max="100000" required value="10"></div>
+                        <div class="field"><label for="event-required-skills">Required skills</label><input id="event-required-skills" name="required_skills" placeholder="First aid, driving, tutoring"><small>Separate skills with commas.</small></div>
+                        <div class="field"><label for="event-participation-type">Participation type</label><select id="event-participation-type" name="participation_type"><option value="in_person">In person</option><option value="remote">Remote</option><option value="hybrid">Hybrid</option></select></div>
+                        <div class="field"><label for="event-deadline">Application deadline</label><input id="event-deadline" name="application_deadline" type="date"></div>
+                        <div class="field"><label for="event-eligibility">Eligibility requirements</label><input id="event-eligibility" name="eligibility" maxlength="1000" placeholder="Minimum age, certifications…"></div>
                         <div class="field"><label for="event-status">Visibility</label><select id="event-status" name="status"><option value="draft">Save as draft</option><option value="published">Publish for volunteers</option></select><small data-event-publish-help>Only approved organisations can publish events.</small></div>
                         <div class="form-actions span-two"><button type="submit" class="button button-primary">Add event</button></div>
                     </div>
                 </form>
+            </section>
+            <section class="dash-section" id="attendance">
+                <div class="section-heading">
+                    <div><span class="eyebrow">After the event</span><h2>Attendance management</h2></div>
+                </div>
+                <form class="attendance-filters" data-attendance-filters>
+                    <label class="field"><span>Event</span><select data-attendance-event><option value="">All events</option></select></label>
+                    <label class="field"><span>From</span><input type="date" data-attendance-from></label>
+                    <label class="field"><span>To</span><input type="date" data-attendance-to></label>
+                    <label class="field"><span>Status</span><select data-attendance-status><option value="">All statuses</option><option value="not_recorded">Not recorded</option><option value="present">Attended</option><option value="absent">Absent</option><option value="excused">Excused</option></select></label>
+                    <button class="button button-secondary" type="submit">Filter attendance</button>
+                </form>
+                <div class="admin-list" data-organisation-attendance><p class="empty-state compact">Accepted volunteers will appear here after your events.</p></div>
             </section>
             <section class="dash-section" id="applications">
                 <div class="section-heading">
@@ -104,6 +143,22 @@
                 <div class="empty-state compact" data-organisation-applications>
                     <p>Volunteer applications for your organization will appear here.</p>
                 </div>
+            </section>
+            <section class="dash-section" id="impact">
+                <div class="section-heading">
+                    <div><span class="eyebrow">Your organisation's work</span><h2>Impact centre</h2></div>
+                    <a class="button button-secondary" data-impact-export href="/api/organisations/me/impact.csv">Export CSV</a>
+                </div>
+                <form class="impact-filters" data-impact-filters>
+                    <label class="field"><span>From</span><input type="date" data-impact-from></label>
+                    <label class="field"><span>To</span><input type="date" data-impact-to></label>
+                    <label class="field"><span>Category</span><select data-impact-category><option value="">All categories</option></select></label>
+                    <button class="button button-secondary" type="submit">Apply filters</button>
+                </form>
+                <div class="admin-stats impact-stats-grid" data-impact-metrics><p class="empty-state compact">Impact metrics will load from your events, applications and confirmed attendance.</p></div>
+                <p class="form-footnote" data-impact-definitions></p>
+                <div class="impact-monthly" data-impact-monthly></div>
+                <div class="impact-categories" data-impact-categories></div>
             </section>
         </section>
     </main>

@@ -6,7 +6,7 @@
         <title>Volunteer Space | Volunteer Connect</title>
         <link rel="stylesheet" href="src/styles.css">
     </head>
-<body data-dashboard-role="volunteer">
+<body data-dashboard-role="volunteer" data-auth-ready="false">
     <header class="site-header">
         <div class="header-inner">
             <a href="/index.html" class="logo">
@@ -14,7 +14,7 @@
                 <span class="logo-type">volunteer<span>connect</span></span>
             </a>
             <nav class="main-nav" aria-label="Main navigation">
-                <a href="/events.html">Find opportunities</a>
+                <a href="/events.html">Find organizations</a>
                 <a href="/how-it-works.html">How it works</a>
                 <a href="/about.html">Our story</a>
                 <span class="nav-divider"></span>
@@ -29,13 +29,16 @@
                 <div>
                     <span class="eyebrow">Your volunteer space</span>
                     <h1>Good to see<br><em>you here.</em></h1>
-                    <p data-profile-greeting>Keep track of your applications and find an organisation to volunteer with.</p>
+                    <p data-profile-greeting>Keep track of your applications and find an organization to volunteer with.</p>
                 </div>
-                <a href="/events.html" class="button button-primary">Find opportunities →</a>
+                <a href="/events.html" class="button button-primary">Find organizations →</a>
             </div>
             <nav class="dashboard-nav" aria-label="Dashboard sections">
                 <a href="#applications">My applications</a>
-                <a href="/events.html">Find opportunities</a>
+                <a href="#recommendations">Recommended</a>
+                <a href="#attendance">Attendance and hours</a>
+                <a href="#profile">My profile</a>
+                <a href="/events.html">Find organizations</a>
             </nav>
             <p class="notice notice-info" data-dashboard-message role="status" aria-live="polite">Sign in to view your applications.</p>
             <section class="dash-section" id="applications">
@@ -48,16 +51,57 @@
                 <div class="empty-state compact" data-volunteer-applications>
                     <div class="empty-icon">♡</div>
                     <h3>Your next step starts here.</h3>
-                    <p>When you apply to an organisation, you can follow its progress here.</p>
-                    <a href="/events.html" class="button button-secondary">Explore organisations →</a>
+                    <p>When you apply to an organization, you can follow its progress here.</p>
+                    <a href="/events.html" class="button button-secondary">Explore organizations →</a>
                 </div>
+            </section>
+            <section class="dash-section" id="recommendations">
+                <div class="section-heading">
+                    <div><span class="eyebrow">A useful next step</span><h2>Recommended opportunities</h2></div>
+                    <a href="/events.html" class="text-link">Browse all opportunities</a>
+                </div>
+                <div class="admin-list" data-volunteer-recommendations><p class="empty-state compact">Recommendations appear after you sign in and add preferences.</p></div>
+            </section>
+            <section class="dash-section" id="attendance">
+                <div class="section-heading">
+                    <div><span class="eyebrow">Confirmed participation</span><h2>Attendance and volunteer hours</h2></div>
+                    <strong class="volunteer-hour-total"><span data-volunteer-confirmed-hours>0</span> confirmed hours</strong>
+                </div>
+                <div class="admin-list" data-volunteer-attendance><p class="empty-state compact">Your attendance history will appear after an organisation records it.</p></div>
+            </section>
+            <section class="dash-section" id="profile">
+                <div class="section-heading">
+                    <div><span class="eyebrow">Your preferences</span><h2>Volunteer profile</h2></div>
+                </div>
+                <form class="volunteer-profile-form" data-volunteer-profile-form>
+                    <div class="profile-form">
+                        <div class="field"><label for="volunteer-name">Full name</label><input id="volunteer-name" name="full_name" required minlength="2" maxlength="120"></div>
+                        <div class="field"><label for="volunteer-phone">Phone</label><input id="volunteer-phone" name="phone" type="tel" maxlength="40"></div>
+                        <div class="field"><label for="volunteer-location">Location</label><input id="volunteer-location" name="location" maxlength="120"></div>
+                        <div class="field"><label for="volunteer-city">City</label><input id="volunteer-city" name="city" maxlength="100"></div>
+                        <div class="field"><label for="volunteer-province">Province</label><input id="volunteer-province" name="province" maxlength="100"></div>
+                        <div class="field"><label for="volunteer-service-area">Preferred service area</label><input id="volunteer-service-area" name="service_area" maxlength="160"></div>
+                        <div class="field"><label for="volunteer-skills">Skills</label><input id="volunteer-skills" name="skills" placeholder="First aid, tutoring, driving"></div>
+                        <div class="field"><label for="volunteer-interests">Interests</label><input id="volunteer-interests" name="interests" placeholder="Education, community, environment"></div>
+                        <div class="field"><label for="volunteer-categories">Preferred categories</label><input id="volunteer-categories" name="preferred_categories" placeholder="Education, food security"></div>
+                        <div class="field"><label for="volunteer-days">Available days</label><input id="volunteer-days" name="available_days" placeholder="Saturday, Sunday"></div>
+                        <div class="field"><label for="volunteer-time-start">Available from</label><input id="volunteer-time-start" name="available_time_start" type="time"></div>
+                        <div class="field"><label for="volunteer-time-end">Available until</label><input id="volunteer-time-end" name="available_time_end" type="time"></div>
+                        <div class="field"><label for="volunteer-participation">Participation type</label><select id="volunteer-participation" name="participation_type"><option value="">No preference</option><option value="in_person">In person</option><option value="remote">Remote</option><option value="hybrid">Hybrid</option></select></div>
+                        <div class="field"><label for="volunteer-distance">Preferred travel distance (km)</label><input id="volunteer-distance" name="preferred_distance_km" type="number" min="0" max="500"></div>
+                        <div class="field span-two"><label for="volunteer-experience">Experience</label><textarea id="volunteer-experience" name="experience" maxlength="2000" rows="4"></textarea></div>
+                        <div class="field span-two"><label for="volunteer-availability">Availability notes</label><textarea id="volunteer-availability" name="availability_notes" maxlength="500" rows="2"></textarea></div>
+                        <label class="profile-privacy-toggle"><input type="checkbox" name="share_with_organisations"> Share my skills and preferences with organisations where I apply</label>
+                        <div class="form-actions span-two"><button type="submit" class="button button-primary">Save volunteer profile</button></div>
+                    </div>
+                </form>
             </section>
         </section>
     </main>
     <footer class="site-footer">
         <div class="footer-bottom">
             <a href="/index.html">Volunteer Connect</a>
-            <a href="/events.html">Find opportunities</a>
+            <a href="/events.html">Find organizations</a>
             <span>Built for people who care.</span>
         </div>
     </footer>

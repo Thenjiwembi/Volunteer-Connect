@@ -62,6 +62,16 @@
                     <h2>Upcoming volunteer events</h2>
                 </div>
             </div>
+            <form class="event-discovery-filters" data-event-filters>
+                <label class="field"><span>Location</span><input type="search" name="location" data-event-filter-location></label>
+                <label class="field"><span>Category</span><input type="search" name="category" data-event-filter-category></label>
+                <label class="field"><span>Required skill</span><input type="search" name="skill" data-event-filter-skill></label>
+                <label class="field"><span>From</span><input type="date" name="from" data-event-filter-from></label>
+                <label class="field"><span>To</span><input type="date" name="to" data-event-filter-to></label>
+                <label class="field"><span>Participation</span><select name="participation_type" data-event-filter-participation><option value="">All types</option><option value="in_person">In person</option><option value="remote">Remote</option><option value="hybrid">Hybrid</option></select></label>
+                <label class="check-filter"><input type="checkbox" data-event-filter-available> Only events with places open</label>
+                <button class="button button-secondary" type="submit">Filter events</button>
+            </form>
             <p class="notice notice-info" role="status" aria-live="polite" data-volunteer-events-message>Loading upcoming events…</p>
             <div class="events-grid" data-volunteer-events-list></div>
             <div class="empty-state" data-volunteer-events-empty hidden>
@@ -70,6 +80,7 @@
             </div>
         </section>
     </main>
+    <script type="module" src="/src/auth.js"></script>
     <script type="module" src="/src/organisations.js"></script>
     <script type="module" src="/src/events.js"></script>
   </body>

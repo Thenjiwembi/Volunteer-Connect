@@ -1,8 +1,8 @@
 {
   "routes": [
     { "path": "/", "title": "Volunteer Connect" },
-    { "path": "/events.html", "title": "Browse opportunities" },
-    { "path": "/event-details.html", "title": "Opportunity details" },
+    { "path": "/events.html", "title": "Find organizations" },
+    { "path": "/event-details.html", "title": "Organization directory" },
     { "path": "/about.html", "title": "About Volunteer Connect" },
     { "path": "/how-it-works.html", "title": "How it works" },
     { "path": "/contact.html", "title": "Contact" },

@@ -5,7 +5,7 @@
 - Stage 1: schema, relationships, indexes, triggers, RLS, and capacity-safe registration function are present in `supabase/migrations/001_volunteer_connect.sql`.
 - Stage 2: browser Supabase Auth client, registration/login/reset/logout flows, bearer-token API middleware, profile retrieval/update, suspended-account checks, and protected routes are implemented.
 - Stage 3: organisation profile submission/editing, admin review queue, approval metadata, and publish gate are implemented.
-- Stage 4: public event catalogue/detail pages, filters, organisation-owned event create/update/delete API routes, and server validation are implemented.
+- Stage 4: public approved-organization directory with search and direct volunteer applications is implemented. Event management and event-based APIs remain available for organizations that use them.
 - Stage 5: volunteer applications, duplicate/capacity protection, atomic organisation status decisions, attendance/withdrawal RPCs, and dashboard views are implemented.
 - Stage 6: public pages and volunteer/organisation/admin dashboards are implemented with responsive states and role-aware routing.
 - Stage 7: Helmet hardening with production CSP/clickjacking protection, fail-closed production CORS, rate limiting, safe errors, Zod validation, non-recursive RLS, RPC-only registration mutations, and ownership checks are implemented.

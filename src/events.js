@@ -1,8 +1,9 @@
-import { getAccessToken } from './organisations.js'
+import { getAccessToken } from './auth.js'
 
 const eventList = document.querySelector('[data-volunteer-events-list]')
 const eventMessage = document.querySelector('[data-volunteer-events-message]')
 const emptyState = document.querySelector('[data-volunteer-events-empty]')
+const eventFilters = document.querySelector('[data-event-filters]')
 
 function showEventMessage(text, type = 'info', showLogin = false) {
   eventMessage.replaceChildren(document.createTextNode(text))
@@ -46,6 +47,10 @@ function createEventCard(event) {
   const organiser = document.createElement('p')
   organiser.className = 'event-organiser'
   organiser.textContent = `Hosted by ${organisation}`
+  const detailsLink = document.createElement('a')
+  detailsLink.className = 'text-link'
+  detailsLink.href = `/event-details.html?id=${encodeURIComponent(event.id)}`
+  detailsLink.textContent = 'View opportunity details'
 
   const actions = document.createElement('div')
   actions.className = 'event-application-actions'
@@ -62,14 +67,23 @@ function createEventCard(event) {
   button.dataset.eventApply = event.id
   actions.append(message, button)
 
-  body.append(meta, title, description, organiser, actions)
+  body.append(meta, title, description, organiser, detailsLink, actions)
   card.append(visual, body)
   return card
 }
 
 async function loadEvents() {
   try {
-    const response = await fetch('/api/events')
+    const params = new URLSearchParams()
+    for (const [field, selector] of Object.entries({ location: '[data-event-filter-location]', category: '[data-event-filter-category]', skill: '[data-event-filter-skill]', from: '[data-event-filter-from]', to: '[data-event-filter-to]', participation_type: '[data-event-filter-participation]' })) {
+      const value = document.querySelector(selector)?.value.trim()
+      if (value) params.set(field, value)
+    }
+    if (document.querySelector('[data-event-filter-available]')?.checked) params.set('available', 'true')
+    const token = await getAccessToken()
+    const response = await fetch(`/api/events${params.size ? `?${params}` : ''}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     let payload
     try {
       payload = await response.json()
@@ -115,6 +129,11 @@ eventList.addEventListener('click', async (event) => {
     button.disabled = false
     showEventMessage(error.message || 'Your application could not be submitted.', 'error', error.message?.includes('Sign in'))
   }
+})
+
+eventFilters.addEventListener('submit', (event) => {
+  event.preventDefault()
+  loadEvents()
 })
 
 loadEvents()

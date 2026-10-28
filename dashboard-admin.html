@@ -6,7 +6,7 @@
         <title>Administrator Space | Volunteer Connect</title>
         <link rel="stylesheet" href="src/styles.css">
     </head>
-<body data-dashboard-role="admin">
+<body data-dashboard-role="admin" data-auth-ready="false">
     <header class="site-header">
         <div class="header-inner">
             <a href="/index.html" class="logo">
@@ -14,7 +14,7 @@
                 <span class="logo-type">volunteer<span>connect</span></span>
             </a>
             <nav class="main-nav" aria-label="Main navigation">
-                <a href="/events.html">Find opportunities</a>
+                <a href="/events.html">Find organizations</a>
                 <a href="/how-it-works.html">How it works</a>
                 <a href="/about.html">Our story</a>
                 <span class="nav-divider"></span>
@@ -29,13 +29,14 @@
                 <div>
                     <span class="eyebrow">Administrator space</span>
                     <h1>Keep the good work<br><em>moving.</em></h1>
-                    <p>Review organisations and support a safe, trusted community.</p>
+                    <p>Review organizations and support a safe, trusted community.</p>
                 </div>
                 <span class="status-pill status-success">Platform overview</span>
             </div>
             <nav class="dashboard-nav" aria-label="Dashboard sections">
                 <a href="#overview">Overview</a>
                 <a href="#review-queue">Review queue</a>
+                <a href="#organisation-verification">Organisation verification</a>
                 <a href="#users">Users</a>
                 <a href="#audit">Audit trail</a>
             </nav>
@@ -52,12 +53,12 @@
                     <div>
                         <span>⌂</span>
                         <strong data-stat="approved_organisations">—</strong>
-                        <small>approved organisations</small>
+                        <small>approved organizations</small>
                     </div>
                     <div>
                         <span>▣</span>
                         <strong data-stat="upcoming_events">—</strong>
-                        <small>upcoming opportunities</small>
+                        <small>upcoming events</small>
                     </div>
                     <div>
                         <span>↗</span>
@@ -66,6 +67,21 @@
                     </div>
                 </div>
                 <p class="form-footnote">Pending accounts: <strong data-stat="pending_accounts">—</strong></p>
+            </section>
+            <section class="dash-section" id="organisation-verification">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Trust and safety</span>
+                        <h2>Organisation verification</h2>
+                    </div>
+                </div>
+                <form class="verification-filters" data-verification-filters>
+                    <label class="field"><span>Search organisations</span><input type="search" data-verification-search placeholder="Name, location or email"></label>
+                    <label class="field"><span>Status</span><select data-verification-status-filter><option value="">All statuses</option><option value="pending">Pending</option><option value="more_information_required">More information required</option><option value="rejected">Rejected</option><option value="approved">Approved</option></select></label>
+                    <button type="submit" class="button button-secondary">Filter</button>
+                </form>
+                <div class="notice notice-info" data-verification-admin-message role="status" aria-live="polite" hidden></div>
+                <div class="admin-list" data-organisation-verification-list><p class="empty-state compact">Sign in to review organisation verification.</p></div>
             </section>
             <section class="dash-section" id="review-queue">
                 <div class="section-heading">

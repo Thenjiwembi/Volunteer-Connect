@@ -158,6 +158,7 @@
   .admin-stats { grid-template-columns: 1fr 1fr; }
 }
 [hidden] { display: none !important; }
+body[data-dashboard-role]:not([data-auth-ready="true"]) main { visibility: hidden; }
 .auth-form .field textarea { width: 100%; min-height: 100px; border: 1px solid var(--line); border-radius: 7px; background: var(--cream); padding: 12px 13px; color: var(--ink); resize: vertical; }
 .auth-form [disabled], .admin-list-actions [disabled] { cursor: wait; opacity: .65; }
 .admin-list { display: grid; gap: 12px; }
@@ -168,3 +169,70 @@
 .admin-list-card p { color: var(--muted); font-size: 12px; line-height: 1.6; }
 .admin-list-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .admin-list .status-pill { justify-self: start; }
+.verification-panel, .volunteer-profile-form { margin-top: 26px; padding: 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; }
+.verification-upload { display: flex; align-items: end; gap: 16px; flex-wrap: wrap; margin: 20px 0; }
+.verification-upload .field { flex: 1 1 320px; }
+.verification-upload small, .field small { display: block; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.verification-feedback { padding: 14px; border-left: 3px solid var(--coral); background: #fae2de; color: var(--ink); font-size: 13px; line-height: 1.6; }
+.verification-documents { display: grid; gap: 9px; margin: 18px 0; }
+.verification-document-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+.verification-filters, .attendance-filters, .impact-filters { display: flex; align-items: end; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
+.verification-filters .field { flex: 1 1 220px; }
+.attendance-filters .field, .impact-filters .field { flex: 1 1 150px; }
+.attendance-record-form { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(100px, .7fr) auto auto; align-items: end; gap: 10px; margin-top: 12px; }
+.attendance-record-form select, .attendance-record-form input[type="number"], .verification-decision-form select, .verification-decision-form textarea { min-height: 40px; border: 1px solid var(--line); border-radius: 7px; background: var(--cream); padding: 8px 10px; color: var(--ink); }
+.attendance-record-form label { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; }
+.attendance-card small { color: var(--muted); }
+.verification-decision-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.verification-decision-form > select, .verification-decision-form > label:first-of-type { grid-column: 1 / -1; }
+.verification-decision-form label { display: grid; gap: 7px; color: var(--muted); font-size: 11px; font-weight: 700; }
+.verification-decision-form textarea { width: 100%; resize: vertical; }
+.impact-stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 20px 0; }
+.impact-stats-grid > div { min-height: 100px; padding: 16px; border: 1px solid var(--line); border-radius: 9px; background: var(--paper); }
+.impact-stats-grid span, .impact-stats-grid strong { display: block; }
+.impact-stats-grid span { color: var(--muted); font-size: 11px; }
+.impact-stats-grid strong { margin-top: 14px; font-size: 28px; font-weight: 500; }
+.impact-monthly, .impact-categories { margin-top: 28px; }
+.impact-monthly h3, .impact-categories h3 { margin-bottom: 10px; font-size: 16px; }
+.impact-month-row { display: grid; grid-template-columns: .8fr repeat(4, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+.impact-month-row strong { color: var(--ink); }
+.impact-category-row { display: grid; grid-template-columns: minmax(150px, 1fr) 2fr; align-items: center; gap: 15px; padding: 9px 0; color: var(--muted); font-size: 12px; }
+.impact-category-row progress { width: 100%; height: 9px; accent-color: var(--teal); }
+.volunteer-hour-total { color: var(--teal); font-size: 14px; }
+.volunteer-hour-total span { font-size: 26px; }
+.profile-privacy-toggle { display: flex; align-items: center; gap: 9px; grid-column: 1 / -1; color: var(--muted); font-size: 12px; }
+.profile-privacy-toggle input { accent-color: var(--teal); }
+.recommendation-card > p:nth-of-type(2) { color: var(--teal); }
+.recommendation-card .form-footnote { color: var(--muted); }
+.event-detail-shell { max-width: 1180px; margin: auto; padding: 48px 32px 110px; }
+.event-detail { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, .7fr); gap: 28px 60px; align-items: start; }
+.event-detail-main h1 { margin: 15px 0; font-size: clamp(42px, 6vw, 68px); line-height: .96; font-weight: 500; }
+.event-detail-meta { color: var(--muted); font-size: 13px; }
+.event-detail-visual { position: relative; min-height: 180px; margin-bottom: 28px; padding: 18px; border-radius: 10px; background: var(--teal-soft); }
+.event-detail-requirements { padding: 20px; border-top: 1px solid var(--line); }
+.event-detail-requirements h2 { font-size: 19px; font-weight: 500; }
+.event-detail-requirements li, .event-detail-requirements p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.audience-section { max-width: 1180px; margin: auto; padding: 70px 32px 95px; }
+.audience-section .section-heading { margin-bottom: 25px; }
+.audience-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.audience-panel { padding: 28px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; }
+.audience-panel-warm { background: #fff1c8; }
+.audience-panel h3 { margin: 20px 0 12px; font-size: 22px; font-weight: 500; }
+.audience-panel ul { min-height: 112px; padding-left: 19px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+.audience-panel li + li { margin-top: 5px; }
+@media (max-width: 850px) { .audience-section { padding-left: 22px; padding-right: 22px; } }
+@media (max-width: 600px) { .audience-grid { grid-template-columns: 1fr; } .audience-panel ul { min-height: 0; } }
+@media (max-width: 850px) {
+  .event-detail-shell { padding-left: 22px; padding-right: 22px; }
+  .event-detail { grid-template-columns: 1fr; gap: 24px; }
+  .attendance-record-form { grid-template-columns: 1fr 1fr; }
+  .impact-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .verification-panel, .volunteer-profile-form { padding: 17px; }
+  .verification-decision-form, .attendance-record-form { grid-template-columns: 1fr; }
+  .verification-decision-form > select, .verification-decision-form > label:first-of-type { grid-column: auto; }
+  .impact-stats-grid { grid-template-columns: 1fr 1fr; }
+  .impact-month-row { grid-template-columns: 1fr 1fr; }
+  .impact-month-row strong { grid-column: 1 / -1; }
+}

@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { getAccessToken } from './auth.js'
 
 const organisationList = document.querySelector('[data-organisations-list]')
 const organisationMessage = document.querySelector('[data-organisations-message]')
@@ -77,29 +77,6 @@ function createOrganisationCard(organisation) {
   return card
 }
 
-let supabase
-export async function getAccessToken() {
-  if (!supabase) {
-    let url = import.meta.env.VITE_SUPABASE_URL
-    let key = import.meta.env.VITE_SUPABASE_ANON_KEY
-    if (!url || !key) {
-      const response = await fetch('/api/config')
-      if (!response.ok) throw new Error('Authentication settings could not be loaded.')
-      const config = await response.json()
-      url = config.supabaseUrl
-      key = config.supabaseAnonKey
-    }
-    if (!url || !key) throw new Error('Authentication is not configured. Contact the site administrator.')
-    supabase = createClient(url, key, {
-      auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
-    })
-  }
-  const { data, error } = await supabase.auth.getSession()
-  if (error) throw new Error('Your sign-in session could not be checked. Please sign in again.')
-  if (!data.session?.access_token) throw new Error('Sign in as a volunteer to apply.')
-  return data.session.access_token
-}
-
 let requestId = 0
 async function loadOrganisations() {
   const currentRequestId = ++requestId
@@ -114,7 +91,10 @@ async function loadOrganisations() {
 
   try {
     const query = params.toString()
-    const response = await fetch(`/api/organisations${query ? `?${query}` : ''}`)
+    const token = await getAccessToken()
+    const response = await fetch(`/api/organisations${query ? `?${query}` : ''}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     let payload
     try {
       payload = await response.json()

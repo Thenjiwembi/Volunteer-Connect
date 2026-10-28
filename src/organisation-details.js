@@ -1,4 +1,4 @@
-import { getAccessToken } from './organisations.js'
+import { getAccessToken } from './auth.js'
 
 const message = document.querySelector('[data-organisation-detail-message]')
 const detail = document.querySelector('[data-organisation-detail]')
@@ -44,7 +44,10 @@ function displayOrganisation(organisation) {
 
 async function loadOrganisation() {
   if (!organisationId) throw new Error('Choose an organisation from the directory to view its profile.')
-  const response = await fetch(`/api/organisations/${encodeURIComponent(organisationId)}`)
+  const token = await getAccessToken()
+  const response = await fetch(`/api/organisations/${encodeURIComponent(organisationId)}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
   let payload
   try {
     payload = await response.json()
